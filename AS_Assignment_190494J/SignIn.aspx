@@ -36,6 +36,27 @@
                 icon: 'warning'
             })
         }
+
+        function alertVerify() {
+            Swal.fire({
+                title: 'Warning!',
+                text: 'Please verify your account first before logging',
+                icon: 'warning'
+            })
+        }
+
+        function alertVerifyAccount() {
+            Swal.fire({
+                title: "Verify Account",
+                text: "Please input your email",
+                input: 'text',
+                showCancelButton: true
+            }).then((result) => {
+                if (result.value) {
+                    window.location = "VerifyAccount.aspx?emailagain=" + result.value;
+                }
+            });
+        }
     </script>
 
     <script>
@@ -122,13 +143,13 @@
                 <td class="auto-style4">&nbsp;</td>
             </tr>
             <tr>
-                <td class="auto-style3">&nbsp;</td>
+                <td class="auto-style3"></td>
                 <td class="auto-style4">
                     <div>  
                         <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" />
                     </div>
                 </td>
-                <td class="auto-style4">&nbsp;</td>
+                <td class="auto-style4"></td>
             </tr>
             <%--<tr>
                 <td class="auto-style3">&nbsp;</td>
@@ -138,6 +159,20 @@
             </tr>--%>
             <tr>
                 <td class="auto-style3">&nbsp;</td>
+                <td class="auto-style4">
+                    Did not verify account?</td>
+                <td class="auto-style4">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="auto-style3">&nbsp;</td>
+                <td class="auto-style4">
+                    <asp:Button ID="btn_Verify" runat="server" OnClick="btn_Verify_Click" Text="Verify Account" />
+                </td>
+                <td class="auto-style4">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="auto-style3">&nbsp;</td>
+
             </tr>
         </table>
 

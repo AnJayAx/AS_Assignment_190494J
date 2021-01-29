@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/ResetPass.Master" AutoEventWireup="true" CodeBehind="PasswordDue.aspx.cs" Inherits="AS_Assignment_190494J.PasswordDue" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Secret.Master" AutoEventWireup="true" CodeBehind="PasswordDue.aspx.cs" Inherits="AS_Assignment_190494J.PasswordDue" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

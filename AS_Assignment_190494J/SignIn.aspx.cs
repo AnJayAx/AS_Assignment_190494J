@@ -95,90 +95,22 @@ namespace AS_Assignment_190494J
                 string dbSalt2 = getDBSalt2(userEmail);
                 string dbHash3 = getDBHash3(userEmail);
                 string dbSalt3 = getDBSalt3(userEmail);
+
+                string IsVerified = getVerified(userEmail);
                 //lb_Error.Text = getDBHash(userEmail);
                 try
                 {
-                    if (dbSalt != null && dbSalt.Length > 0 && dbHash != null && dbHash.Length > 0)
+                    if (IsVerified == "True")
                     {
-                        if (dbHash2 == null && dbSalt2 == null)
+
+
+                        if (dbSalt != null && dbSalt.Length > 0 && dbHash != null && dbHash.Length > 0)
                         {
-                            // ************* Start of loggin in ****************
-                            string pwdWithSalt = pwd + dbSalt;
-                            byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
-                            string userHash = Convert.ToBase64String(hashWithSalt);
-                            DateTime datetimenow = DateTime.Now;
-                            //DateTime datetimereset = getResetTime(tb_Email.Text).to;
 
-                            //lb_Error.Text = status + "Test" + status;
-                            if (getResetTime(tb_Email.Text) != null)
-                            {
-                                DateTime datetimereset = Convert.ToDateTime(getResetTime(tb_Email.Text));
-                                int comparetime = DateTime.Compare(datetimenow, datetimereset);
-                                if (comparetime >= 0)
-                                {
-                                    accOpen(tb_Email.Text);
-                                }
-                            }
-                            string status = getStatus(tb_Email.Text);
-                            if (status == "Open")
-                            {
-                                if (userHash.Equals(dbHash))
-                                {
-                                    resetCount(tb_Email.Text);
-                                    resetLockoutTimer(tb_Email.Text);
-                                    Session["LoggedIn"] = tb_Email.Text.Trim();
-                                    //create a new GUID and save into the session
-                                    string guid = Guid.NewGuid().ToString();
-                                    Session["AuthToken"] = guid;
-
-                                    //Create a new cookie with this guid value
-                                    Response.Cookies.Add(new HttpCookie("AuthToken", guid));
-
-                                    Session["UserEmail"] = userEmail;
-
-                                    //insert reset password here if compare(currenttime, maxtime) >= 0
-                                    DateTime datetimemax = Convert.ToDateTime(getMaxPassAge(tb_Email.Text));
-                                    DateTime timenow = DateTime.Now;
-                                    int comparingmaxtime = DateTime.Compare(timenow, datetimemax);
-                                    if (comparingmaxtime >= 0)
-                                    {
-                                        Response.Redirect("PasswordDue.aspx", false);
-                                    }
-                                    else
-                                    {
-                                        Response.Redirect("LoggedIn.aspx", false);
-                                    }
-                                   
-                                }
-                                else
-                                {
-                                    addCounter(tb_Email.Text);
-                                    int counttries = getCounter(tb_Email.Text);
-                                    lb_Error.Text = "Email or password is not valid. Please try again. You have " + (3 - counttries) + " tries left.";
-                                    //tb_Email.Text = "";
-                                    tb_Password.Text = "";
-                                    //counttries = counttries + 1;
-                                    //Response.Redirect("Login.aspx", false);
-                                    if (counttries == 3)
-                                    {
-                                        accLockout(tb_Email.Text);
-                                        lockoutReset(tb_Email.Text);
-                                        resetCount(tb_Email.Text);
-                                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertLockout30()", true);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertLockout()", true);
-                            }
-                        }
-                        else
-                        {
-                            if (dbHash3 == null && dbSalt3 == null)
+                            if (dbHash2 == null && dbSalt2 == null)
                             {
                                 // ************* Start of loggin in ****************
-                                string pwdWithSalt = pwd + dbSalt2;
+                                string pwdWithSalt = pwd + dbSalt;
                                 byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
                                 string userHash = Convert.ToBase64String(hashWithSalt);
                                 DateTime datetimenow = DateTime.Now;
@@ -197,7 +129,7 @@ namespace AS_Assignment_190494J
                                 string status = getStatus(tb_Email.Text);
                                 if (status == "Open")
                                 {
-                                    if (userHash.Equals(dbHash2))
+                                    if (userHash.Equals(dbHash))
                                     {
                                         resetCount(tb_Email.Text);
                                         resetLockoutTimer(tb_Email.Text);
@@ -210,7 +142,6 @@ namespace AS_Assignment_190494J
                                         Response.Cookies.Add(new HttpCookie("AuthToken", guid));
 
                                         Session["UserEmail"] = userEmail;
-                                        Response.Redirect("LoggedIn.aspx", false);
 
                                         //insert reset password here if compare(currenttime, maxtime) >= 0
                                         DateTime datetimemax = Convert.ToDateTime(getMaxPassAge(tb_Email.Text));
@@ -251,78 +182,159 @@ namespace AS_Assignment_190494J
                             }
                             else
                             {
-                                // ************* Start of loggin in ****************
-                                string pwdWithSalt = pwd + dbSalt3;
-                                byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
-                                string userHash = Convert.ToBase64String(hashWithSalt);
-                                DateTime datetimenow = DateTime.Now;
-                                //DateTime datetimereset = getResetTime(tb_Email.Text).to;
-
-                                //lb_Error.Text = status + "Test" + status;
-                                if (getResetTime(tb_Email.Text) != null)
+                                if (dbHash3 == null && dbSalt3 == null)
                                 {
-                                    DateTime datetimereset = Convert.ToDateTime(getResetTime(tb_Email.Text));
-                                    int comparetime = DateTime.Compare(datetimenow, datetimereset);
-                                    if (comparetime >= 0)
+                                    // ************* Start of loggin in ****************
+                                    string pwdWithSalt = pwd + dbSalt2;
+                                    byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+                                    string userHash = Convert.ToBase64String(hashWithSalt);
+                                    DateTime datetimenow = DateTime.Now;
+                                    //DateTime datetimereset = getResetTime(tb_Email.Text).to;
+
+                                    //lb_Error.Text = status + "Test" + status;
+                                    if (getResetTime(tb_Email.Text) != null)
                                     {
-                                        accOpen(tb_Email.Text);
-                                    }
-                                }
-                                string status = getStatus(tb_Email.Text);
-                                if (status == "Open")
-                                {
-                                    if (userHash.Equals(dbHash3))
-                                    {
-                                        resetCount(tb_Email.Text);
-                                        resetLockoutTimer(tb_Email.Text);
-                                        Session["LoggedIn"] = tb_Email.Text.Trim();
-                                        //create a new GUID and save into the session
-                                        string guid = Guid.NewGuid().ToString();
-                                        Session["AuthToken"] = guid;
-
-                                        //Create a new cookie with this guid value
-                                        Response.Cookies.Add(new HttpCookie("AuthToken", guid));
-
-                                        Session["UserEmail"] = userEmail;
-                                        Response.Redirect("LoggedIn.aspx", false);
-
-                                        //insert reset password here if compare(currenttime, maxtime) >= 0
-                                        DateTime datetimemax = Convert.ToDateTime(getMaxPassAge(tb_Email.Text));
-                                        DateTime timenow = DateTime.Now;
-                                        int comparingmaxtime = DateTime.Compare(timenow, datetimemax);
-                                        if (comparingmaxtime >= 0)
+                                        DateTime datetimereset = Convert.ToDateTime(getResetTime(tb_Email.Text));
+                                        int comparetime = DateTime.Compare(datetimenow, datetimereset);
+                                        if (comparetime >= 0)
                                         {
-                                            Response.Redirect("PasswordDue.aspx", false);
+                                            accOpen(tb_Email.Text);
+                                        }
+                                    }
+                                    string status = getStatus(tb_Email.Text);
+                                    if (status == "Open")
+                                    {
+                                        if (userHash.Equals(dbHash2))
+                                        {
+                                            resetCount(tb_Email.Text);
+                                            resetLockoutTimer(tb_Email.Text);
+                                            Session["LoggedIn"] = tb_Email.Text.Trim();
+                                            //create a new GUID and save into the session
+                                            string guid = Guid.NewGuid().ToString();
+                                            Session["AuthToken"] = guid;
+
+                                            //Create a new cookie with this guid value
+                                            Response.Cookies.Add(new HttpCookie("AuthToken", guid));
+
+                                            Session["UserEmail"] = userEmail;
+                                            Response.Redirect("LoggedIn.aspx", false);
+
+                                            //insert reset password here if compare(currenttime, maxtime) >= 0
+                                            DateTime datetimemax = Convert.ToDateTime(getMaxPassAge(tb_Email.Text));
+                                            DateTime timenow = DateTime.Now;
+                                            int comparingmaxtime = DateTime.Compare(timenow, datetimemax);
+                                            if (comparingmaxtime >= 0)
+                                            {
+                                                Response.Redirect("PasswordDue.aspx", false);
+                                            }
+                                            else
+                                            {
+                                                Response.Redirect("LoggedIn.aspx", false);
+                                            }
+
                                         }
                                         else
                                         {
-                                            Response.Redirect("LoggedIn.aspx", false);
+                                            addCounter(tb_Email.Text);
+                                            int counttries = getCounter(tb_Email.Text);
+                                            lb_Error.Text = "Email or password is not valid. Please try again. You have " + (3 - counttries) + " tries left.";
+                                            //tb_Email.Text = "";
+                                            tb_Password.Text = "";
+                                            //counttries = counttries + 1;
+                                            //Response.Redirect("Login.aspx", false);
+                                            if (counttries == 3)
+                                            {
+                                                accLockout(tb_Email.Text);
+                                                lockoutReset(tb_Email.Text);
+                                                resetCount(tb_Email.Text);
+                                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertLockout30()", true);
+                                            }
                                         }
                                     }
                                     else
                                     {
-                                        addCounter(tb_Email.Text);
-                                        int counttries = getCounter(tb_Email.Text);
-                                        lb_Error.Text = "Email or password is not valid. Please try again. You have " + (3 - counttries) + " tries left.";
-                                        //tb_Email.Text = "";
-                                        tb_Password.Text = "";
-                                        //counttries = counttries + 1;
-                                        //Response.Redirect("Login.aspx", false);
-                                        if (counttries == 3)
-                                        {
-                                            accLockout(tb_Email.Text);
-                                            lockoutReset(tb_Email.Text);
-                                            resetCount(tb_Email.Text);
-                                            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertLockout30()", true);
-                                        }
+                                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertLockout()", true);
                                     }
                                 }
                                 else
                                 {
-                                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertLockout()", true);
+                                    // ************* Start of loggin in ****************
+                                    string pwdWithSalt = pwd + dbSalt3;
+                                    byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+                                    string userHash = Convert.ToBase64String(hashWithSalt);
+                                    DateTime datetimenow = DateTime.Now;
+                                    //DateTime datetimereset = getResetTime(tb_Email.Text).to;
+
+                                    //lb_Error.Text = status + "Test" + status;
+                                    if (getResetTime(tb_Email.Text) != null)
+                                    {
+                                        DateTime datetimereset = Convert.ToDateTime(getResetTime(tb_Email.Text));
+                                        int comparetime = DateTime.Compare(datetimenow, datetimereset);
+                                        if (comparetime >= 0)
+                                        {
+                                            accOpen(tb_Email.Text);
+                                        }
+                                    }
+                                    string status = getStatus(tb_Email.Text);
+                                    if (status == "Open")
+                                    {
+                                        if (userHash.Equals(dbHash3))
+                                        {
+                                            resetCount(tb_Email.Text);
+                                            resetLockoutTimer(tb_Email.Text);
+                                            Session["LoggedIn"] = tb_Email.Text.Trim();
+                                            //create a new GUID and save into the session
+                                            string guid = Guid.NewGuid().ToString();
+                                            Session["AuthToken"] = guid;
+
+                                            //Create a new cookie with this guid value
+                                            Response.Cookies.Add(new HttpCookie("AuthToken", guid));
+
+                                            Session["UserEmail"] = userEmail;
+                                            Response.Redirect("LoggedIn.aspx", false);
+
+                                            //insert reset password here if compare(currenttime, maxtime) >= 0
+                                            DateTime datetimemax = Convert.ToDateTime(getMaxPassAge(tb_Email.Text));
+                                            DateTime timenow = DateTime.Now;
+                                            int comparingmaxtime = DateTime.Compare(timenow, datetimemax);
+                                            if (comparingmaxtime >= 0)
+                                            {
+                                                Response.Redirect("PasswordDue.aspx", false);
+                                            }
+                                            else
+                                            {
+                                                Response.Redirect("LoggedIn.aspx", false);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            addCounter(tb_Email.Text);
+                                            int counttries = getCounter(tb_Email.Text);
+                                            lb_Error.Text = "Email or password is not valid. Please try again. You have " + (3 - counttries) + " tries left.";
+                                            //tb_Email.Text = "";
+                                            tb_Password.Text = "";
+                                            //counttries = counttries + 1;
+                                            //Response.Redirect("Login.aspx", false);
+                                            if (counttries == 3)
+                                            {
+                                                accLockout(tb_Email.Text);
+                                                lockoutReset(tb_Email.Text);
+                                                resetCount(tb_Email.Text);
+                                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertLockout30()", true);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertLockout()", true);
+                                    }
                                 }
                             }
                         }
+                    }
+                    else
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertVerify()", true);
                     }
                 }
                 catch (Exception ex)
@@ -531,6 +543,40 @@ namespace AS_Assignment_190494J
             }
             finally { connection.Close(); }
             return s;
+        }
+
+        protected string getVerified(string userEmail)
+        {
+            string h = null;
+
+            SqlConnection connection = new SqlConnection(ASDBConnectionString);
+            string sql = "select EmailVerified FROM Account WHERE Email=@USEREMAIL";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@USEREMAIL", userEmail);
+
+            try
+            {
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["EmailVerified"] != null)
+                        {
+                            if (reader["EmailVerified"] != DBNull.Value)
+                            {
+                                h = reader["EmailVerified"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            finally { connection.Close(); }
+            return h;
         }
 
         public int accLockout(string email)
@@ -807,9 +853,10 @@ namespace AS_Assignment_190494J
             return s;
         }
 
-        protected void btn_Register_Click(object sender, EventArgs e)
+        protected void btn_Verify_Click(object sender, EventArgs e)
         {
-            Response.Redirect("SignUp.aspx");
+            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertVerifyAccount()", true);
+            
         }
     }
 }

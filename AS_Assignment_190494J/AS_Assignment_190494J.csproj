@@ -44,7 +44,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="SendGrid, Version=9.22.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\SendGrid.9.22.0\lib\net452\SendGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="StarkbankEcdsa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\starkbank-ecdsa.1.2.0\lib\net452\StarkbankEcdsa.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -53,6 +62,8 @@
     <Reference Include="System.Data.SqlClient, Version=4.6.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SqlClient.4.8.2\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -111,6 +122,7 @@
     <Content Include="401ErrorPage.aspx" />
     <Content Include="404ErrorPage.aspx" />
     <Content Include="About.aspx" />
+    <Content Include="AccActivation.aspx" />
     <Content Include="App_Data\ASAssignmentDB.mdf" />
     <Content Include="App_Data\ASAssignmentDB_log.ldf">
       <DependentUpon>ASAssignmentDB.mdf</DependentUpon>
@@ -133,7 +145,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="LoggedIn.Master" />
-    <Content Include="ResetPass.Master" />
+    <Content Include="Secret.Master" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="PasswordDue.aspx" />
     <Content Include="Profile.aspx" />
@@ -171,6 +183,7 @@
     <Content Include="SignUp.aspx" />
     <Content Include="Site.Master" />
     <Content Include="UpdateSuccess.aspx" />
+    <Content Include="VerifyAccount.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -190,6 +203,13 @@
     </Compile>
     <Compile Include="404ErrorPage.aspx.designer.cs">
       <DependentUpon>404ErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AccActivation.aspx.cs">
+      <DependentUpon>AccActivation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AccActivation.aspx.designer.cs">
+      <DependentUpon>AccActivation.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
@@ -239,12 +259,12 @@
       <DependentUpon>ProfilePage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResetPass.Master.cs">
-      <DependentUpon>ResetPass.Master</DependentUpon>
+    <Compile Include="Secret.Master.cs">
+      <DependentUpon>Secret.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ResetPass.Master.designer.cs">
-      <DependentUpon>ResetPass.Master</DependentUpon>
+    <Compile Include="Secret.Master.designer.cs">
+      <DependentUpon>Secret.Master</DependentUpon>
     </Compile>
     <Compile Include="SignIn.aspx.cs">
       <DependentUpon>SignIn.aspx</DependentUpon>
@@ -287,6 +307,13 @@
     </Compile>
     <Compile Include="UpdateSuccess.aspx.designer.cs">
       <DependentUpon>UpdateSuccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VerifyAccount.aspx.cs">
+      <DependentUpon>VerifyAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VerifyAccount.aspx.designer.cs">
+      <DependentUpon>VerifyAccount.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

@@ -53,6 +53,35 @@
             })
         }
 
+        function alertInput(activationCode) {
+            swal({
+                title: "Enter your activation code!",
+                text: "Check your email for your activation code and enter it below",
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+            },
+                function (inputValue) {
+                    if (inputValue === false) return false;
+
+                    if (inputValue === "") {
+                        swal.showInputError("You need to write something!");
+                        return false
+                    }
+
+                    if (inputValue == activationCode) {
+                        window.location = "SignIn.aspx";
+                       
+                    }
+                    else {
+                        swal.showInputError("Incorrect Code! Try again");
+                        return false
+                    }
+
+                });
+        }
+
         function alertFailed() {
             Swal.fire({
                 title: 'Failed!',

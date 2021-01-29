@@ -13,16 +13,20 @@ using System.Net;
 using System.IO;
 using System.Web.Script.Serialization;
 using System.Globalization;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System.Net.Mail;
 
 namespace AS_Assignment_190494J
 {
     public partial class SignUp : System.Web.UI.Page
-    { 
+    {
         string ASDBConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["ASDBConnection"].ConnectionString;
         static string finalHash;
         static string salt;
         byte[] Key;
         byte[] IV;
+        static String activationCode;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -71,7 +75,7 @@ namespace AS_Assignment_190494J
                 lb_FNameCheck.Text = "First Name should only contain letters!";
                 lb_FNameCheck.ForeColor = System.Drawing.Color.Red;
             }
-        
+
             if (String.IsNullOrEmpty(tb_LastName.Text))
             {
                 lb_LNameCheck.Text = "Please enter your last name";
@@ -161,7 +165,7 @@ namespace AS_Assignment_190494J
                 //lb_SubmitMsg.Text = "Success! Account Added.";
                 //lb_SubmitMsg.ForeColor = System.Drawing.Color.Green;
                 //return true;
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertSucess()", true);
+                //ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertSucess()", true);
                 return true;
             }
             else
@@ -175,6 +179,7 @@ namespace AS_Assignment_190494J
         {
             if (ValidateCaptcha())
             {
+                string email = tb_Email.Text.ToString();
                 bool validinput = ValidateInput();
 
                 if (validinput)
@@ -203,10 +208,74 @@ namespace AS_Assignment_190494J
                     IV = cipher.IV;
 
                     createAccount();
-
+                    sendCode();
+                    Response.Redirect("AccActivation.aspx?emailadd=" + tb_Email.Text);
+                    //activationCode = getActivationCode(tb_Email.Text);
+                    //ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertInput(activationCode)", true);
+                    //updateVerification(email);
                 }
             }
 
+        }
+
+        private void sendCode()
+        {
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.UseDefaultCredentials = true;
+            smtp.Credentials = new System.Net.NetworkCredential("190494jsitconnect@gmail.com", "P@@55w0rd");
+            smtp.EnableSsl = true;
+            MailMessage msg = new MailMessage();
+            msg.Subject = "Activation Code to Verify Email Address";
+            activationCode = getActivationCode(tb_Email.Text);
+            msg.Body = "Dear " + tb_Email.Text + ", your activation code is " + activationCode + ".";
+            string toAddress = tb_Email.Text;
+            msg.To.Add(toAddress);
+            string fromAddress = "SITCONNECT <190494jsitconnect@gmail.com>";
+            msg.From = new MailAddress(fromAddress);
+            try
+            {
+                smtp.Send(msg);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
+        protected string getActivationCode(string userEmail)
+        {
+            string h = null;
+
+            SqlConnection connection = new SqlConnection(ASDBConnectionString);
+            string sql = "select ActivationCode FROM Account WHERE Email=@USEREMAIL";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@USEREMAIL", userEmail);
+
+            try
+            {
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["ActivationCode"] != null)
+                        {
+                            if (reader["ActivationCode"] != DBNull.Value)
+                            {
+                                h = reader["ActivationCode"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            finally { connection.Close(); }
+            return h;
         }
 
         public bool ValidateCaptcha()
@@ -256,13 +325,15 @@ namespace AS_Assignment_190494J
             {
                 using (SqlConnection con = new SqlConnection(ASDBConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @Email, @CreditCardNo, @DOB, @PasswordHash, @PasswordSalt, @PasswordHash2, @PasswordSalt2, @PasswordHash3, @PasswordSalt3, @EmailVerified, @IV, @Key, @Status, @LockoutCounter, @LockoutReset, @MinPassAge, @MaxPassAge)"))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @Email, @CreditCardNo, @DOB, @PasswordHash, @PasswordSalt, @PasswordHash2, @PasswordSalt2, @PasswordHash3, @PasswordSalt3, @EmailVerified, @IV, @Key, @Status, @LockoutCounter, @LockoutReset, @MinPassAge, @MaxPassAge, @ActivationCode)"))
                     {
                         using (SqlDataAdapter sda = new SqlDataAdapter())
                         {
                             DateTime currentdatetime = DateTime.Now;
                             DateTime minpassage = currentdatetime.AddMinutes(5);
                             DateTime maxpassage = currentdatetime.AddMinutes(15);
+                            Random random = new Random();
+                            activationCode = random.Next(1001, 9999).ToString();
                             cmd.CommandType = CommandType.Text;
                             cmd.Parameters.AddWithValue("@FirstName", tb_FirstName.Text.Trim());
                             cmd.Parameters.AddWithValue("@LastName", tb_LastName.Text.Trim());
@@ -274,7 +345,7 @@ namespace AS_Assignment_190494J
                             cmd.Parameters.AddWithValue("@PasswordSalt2", DBNull.Value);
                             cmd.Parameters.AddWithValue("@PasswordHash3", DBNull.Value);
                             cmd.Parameters.AddWithValue("@PasswordSalt3", DBNull.Value);
-                            cmd.Parameters.AddWithValue("@EmailVerified", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@EmailVerified", "False");
                             cmd.Parameters.AddWithValue("@DOB", tb_BirthDate.Text.Trim());
                             cmd.Parameters.AddWithValue("@IV", Convert.ToBase64String(IV));
                             cmd.Parameters.AddWithValue("@Key", Convert.ToBase64String(Key));
@@ -283,6 +354,7 @@ namespace AS_Assignment_190494J
                             cmd.Parameters.AddWithValue("@LockoutReset", DBNull.Value);
                             cmd.Parameters.AddWithValue("@MinPassAge", minpassage);
                             cmd.Parameters.AddWithValue("@MaxPassAge", maxpassage);
+                            cmd.Parameters.AddWithValue("@ActivationCode", activationCode);
                             cmd.Connection = con;
                             con.Open();
                             cmd.ExecuteNonQuery();
@@ -296,6 +368,7 @@ namespace AS_Assignment_190494J
                 throw new Exception(ex.ToString());
             }
         }
+
 
         protected byte[] encryptData(string data)
         {
