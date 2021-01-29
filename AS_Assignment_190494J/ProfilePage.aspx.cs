@@ -136,13 +136,23 @@ namespace AS_Assignment_190494J
 
         protected void btn_ResetPass_Click(object sender, EventArgs e)
         {
-            lb_OldPass.Visible = true;
-            tb_OldPass.Visible = true;
-            lb_NewPass.Visible = true;
-            tb_NewPass.Visible = true;
-            lb_ConfirmNewPass.Visible = true;
-            tb_ConfirmNewPass.Visible = true;
-            btn_UpdatePass.Visible = true;
+            DateTime currenttime = DateTime.Now;
+            DateTime minpassage = Convert.ToDateTime(getMinPassAge(tb_Email.Text));
+            int compareminage = DateTime.Compare(currenttime, minpassage);
+            if (compareminage >= 0)
+            {
+                lb_OldPass.Visible = true;
+                tb_OldPass.Visible = true;
+                lb_NewPass.Visible = true;
+                tb_NewPass.Visible = true;
+                lb_ConfirmNewPass.Visible = true;
+                tb_ConfirmNewPass.Visible = true;
+                btn_UpdatePass.Visible = true;
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertMinPassAge()", true);
+            }
 
         }
 
@@ -346,6 +356,66 @@ namespace AS_Assignment_190494J
             return s;
         }
 
+        public int updatePassAge(string email)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ASDBConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("UPDATE Account SET MinPassAge = @paraMinPassAge, MaxPassAge = @paraMaxPassAge where Email = @paraEmail"))
+                    {
+                        DateTime currentdatetime = DateTime.Now;
+                        DateTime minpassage = currentdatetime.AddMinutes(5);
+                        DateTime maxpassage = currentdatetime.AddMinutes(15);
+                        cmd.Parameters.AddWithValue("@paraEmail", email);
+                        cmd.Parameters.AddWithValue("@paraMinPassAge", minpassage);
+                        cmd.Parameters.AddWithValue("@paraMaxPassAge", maxpassage);
+                        cmd.Connection = conn;
+                        conn.Open();
+                        int result = cmd.ExecuteNonQuery();
+                        conn.Close();
+                        return result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
+        protected string getMinPassAge(string userEmail)
+        {
+            string s = null;
+            SqlConnection connection = new SqlConnection(ASDBConnectionString);
+            string sql = "SELECT MinPassAge FROM ACCOUNT WHERE Email=@USEREMAIL";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@USEREMAIL", userEmail);
+            try
+            {
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["MinPassAge"] != null)
+                        {
+                            if (reader["MinPassAge"] != DBNull.Value)
+                            {
+                                s = reader["MinPassAge"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            finally { connection.Close(); }
+            return s;
+        }
+
         protected void btn_UpdatePass_Click(object sender, EventArgs e)
         {
             string oldpassword = tb_OldPass.Text.ToString().Trim();
@@ -373,6 +443,10 @@ namespace AS_Assignment_190494J
                         byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdSalt));
                         string userHash = Convert.ToBase64String(hashWithSalt);
 
+                        string pwdSalt3 = oldpassword + dbSalt3;
+                        byte[] hashWithSalt3 = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdSalt3));
+                        string userHash3 = Convert.ToBase64String(hashWithSalt3);
+
                         // if old password is correct, continue
                         if (userHash.Equals(dbHash))
                         {
@@ -383,64 +457,131 @@ namespace AS_Assignment_190494J
                             if (validinput)
                             {
                                 string newpass = HttpUtility.HtmlEncode(tb_NewPass.Text.ToString().Trim());
-                                if (newpass != oldpassword)
+                                if (dbSalt3 == null && dbHash3 == null)
                                 {
-                                    if (confirmpassword == newpass)
+                                    if (newpass != oldpassword)
                                     {
-                                        //Generating random "salt"
-                                        RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-                                        byte[] saltByte = new byte[8];
-
-                                        //Fills array of bytes with a cryptographically strong sequence of random values.
-                                        rng.GetBytes(saltByte);
-                                        salt = Convert.ToBase64String(saltByte);
-
-                                        SHA512Managed newhashing = new SHA512Managed();
-
-                                        string pwdWithSalt = newpass + salt;
-                                        byte[] plainHash = newhashing.ComputeHash(Encoding.UTF8.GetBytes(newpass));
-                                        byte[] hashAndSalt = newhashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
-
-                                        finalHash = Convert.ToBase64String(hashAndSalt);
-
-                                        RijndaelManaged cipher = new RijndaelManaged();
-                                        cipher.GenerateKey();
-                                        Key = cipher.Key;
-                                        IV = cipher.IV;
-
-                                        int updateresult = updatePassword2(email);
-                                        if (updateresult == 1)
+                                        if (confirmpassword == newpass)
                                         {
-                                            Session.Clear();
-                                            Session.Abandon();
-                                            Session.RemoveAll();
+                                            //Generating random "salt"
+                                            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                                            byte[] saltByte = new byte[8];
 
-                                            if (Request.Cookies["ASP.NET_SessionId"] != null)
-                                            {
-                                                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
-                                                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
-                                            }
+                                            //Fills array of bytes with a cryptographically strong sequence of random values.
+                                            rng.GetBytes(saltByte);
+                                            salt = Convert.ToBase64String(saltByte);
 
-                                            if (Request.Cookies["AuthToken"] != null)
+                                            SHA512Managed newhashing = new SHA512Managed();
+
+                                            string pwdWithSalt = newpass + salt;
+                                            byte[] plainHash = newhashing.ComputeHash(Encoding.UTF8.GetBytes(newpass));
+                                            byte[] hashAndSalt = newhashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+
+                                            finalHash = Convert.ToBase64String(hashAndSalt);
+
+                                            RijndaelManaged cipher = new RijndaelManaged();
+                                            cipher.GenerateKey();
+                                            Key = cipher.Key;
+                                            IV = cipher.IV;
+                                            updatePassAge(tb_Email.Text);
+
+                                            int updateresult = updatePassword2(email);
+                                            if (updateresult == 1)
                                             {
-                                                Response.Cookies["Authtoken"].Value = string.Empty;
-                                                Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                                                Session.Clear();
+                                                Session.Abandon();
+                                                Session.RemoveAll();
+
+                                                if (Request.Cookies["ASP.NET_SessionId"] != null)
+                                                {
+                                                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                                                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+                                                }
+
+                                                if (Request.Cookies["AuthToken"] != null)
+                                                {
+                                                    Response.Cookies["Authtoken"].Value = string.Empty;
+                                                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                                                }
+                                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertSuccess()", true);
                                             }
-                                            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertSuccess()", true);
+                                        }
+                                        else
+                                        {
+                                            lb_ErrorConfirmPass.Visible = true;
+                                            lb_ErrorConfirmPass.Text = "Does not match with New Password!";
+                                            lb_ErrorConfirmPass.ForeColor = Color.Red;
                                         }
                                     }
                                     else
                                     {
-                                        lb_ErrorConfirmPass.Visible = true;
-                                        lb_ErrorConfirmPass.Text = "Does not match with New Password!";
-                                        lb_ErrorConfirmPass.ForeColor = Color.Red;
+                                        lb_ErrorNewPass.Visible = true;
+                                        lb_ErrorNewPass.Text = "Your password cannot be the same as your old one!";
+                                        lb_ErrorNewPass.ForeColor = Color.Red;
                                     }
                                 }
                                 else
                                 {
-                                    lb_ErrorNewPass.Visible = true;
-                                    lb_ErrorNewPass.Text = "Your password cannot be the same as your old one!";
-                                    lb_ErrorNewPass.ForeColor = Color.Red;
+                                    if (newpass != oldpassword && newpass != userHash3)
+                                    {
+                                        if (confirmpassword == newpass)
+                                        {
+                                            //Generating random "salt"
+                                            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                                            byte[] saltByte = new byte[8];
+
+                                            //Fills array of bytes with a cryptographically strong sequence of random values.
+                                            rng.GetBytes(saltByte);
+                                            salt = Convert.ToBase64String(saltByte);
+
+                                            SHA512Managed newhashing = new SHA512Managed();
+
+                                            string pwdWithSalt = newpass + salt;
+                                            byte[] plainHash = newhashing.ComputeHash(Encoding.UTF8.GetBytes(newpass));
+                                            byte[] hashAndSalt = newhashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+
+                                            finalHash = Convert.ToBase64String(hashAndSalt);
+
+                                            RijndaelManaged cipher = new RijndaelManaged();
+                                            cipher.GenerateKey();
+                                            Key = cipher.Key;
+                                            IV = cipher.IV;
+                                            updatePassAge(tb_Email.Text);
+
+                                            int updateresult = updatePassword2(email);
+                                            if (updateresult == 1)
+                                            {
+                                                Session.Clear();
+                                                Session.Abandon();
+                                                Session.RemoveAll();
+
+                                                if (Request.Cookies["ASP.NET_SessionId"] != null)
+                                                {
+                                                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                                                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+                                                }
+
+                                                if (Request.Cookies["AuthToken"] != null)
+                                                {
+                                                    Response.Cookies["Authtoken"].Value = string.Empty;
+                                                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                                                }
+                                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertSuccess()", true);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            lb_ErrorConfirmPass.Visible = true;
+                                            lb_ErrorConfirmPass.Text = "Does not match with New Password!";
+                                            lb_ErrorConfirmPass.ForeColor = Color.Red;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        lb_ErrorNewPass.Visible = true;
+                                        lb_ErrorNewPass.Text = "Your password cannot be the same as your last 2 ones!";
+                                        lb_ErrorNewPass.ForeColor = Color.Red;
+                                    }
                                 }
 
                             }
@@ -504,12 +645,14 @@ namespace AS_Assignment_190494J
                                             Key = cipher.Key;
                                             IV = cipher.IV;
 
+                                            updatePassAge(tb_Email.Text);
                                             int updateresult = updatePassword3(email);
                                             if (updateresult == 1)
                                             {
                                                 Session.Clear();
                                                 Session.Abandon();
                                                 Session.RemoveAll();
+
 
                                                 if (Request.Cookies["ASP.NET_SessionId"] != null)
                                                 {
@@ -594,6 +737,8 @@ namespace AS_Assignment_190494J
                                             cipher.GenerateKey();
                                             Key = cipher.Key;
                                             IV = cipher.IV;
+
+                                            updatePassAge(tb_Email.Text);
 
                                             int updateresult = updatePassword(email);
                                             if (updateresult == 1)
@@ -737,13 +882,11 @@ namespace AS_Assignment_190494J
             {
                 using (SqlConnection conn = new SqlConnection(ASDBConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("UPDATE Account SET PasswordHash2 = @paraPasswordHash2, PasswordSalt2 = @paraPasswordSalt2, PasswordHash3 = @paraPasswordHash3, PasswordSalt3 = @paraPasswordSalt3 where Email = @paraEmail"))
+                    using (SqlCommand cmd = new SqlCommand("UPDATE Account SET PasswordHash2 = @paraPasswordHash2, PasswordSalt2 = @paraPasswordSalt2 where Email = @paraEmail"))
                     {
                         cmd.Parameters.AddWithValue("@paraEmail", email);
                         cmd.Parameters.AddWithValue("@paraPasswordHash2", DBNull.Value);
                         cmd.Parameters.AddWithValue("@paraPasswordSalt2", DBNull.Value);
-                        cmd.Parameters.AddWithValue("@paraPasswordHash3", DBNull.Value);
-                        cmd.Parameters.AddWithValue("@paraPasswordSalt3", DBNull.Value);
                         cmd.Connection = conn;
                         conn.Open();
                         int result = cmd.ExecuteNonQuery();

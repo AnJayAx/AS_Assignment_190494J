@@ -61,6 +61,14 @@
             })
         }
 
+        function alertMinPassAge() {
+            Swal.fire({
+                title: 'Warning!',
+                text: 'You can only reset your password 5 mins after last edited!',
+                icon: 'warning'
+            })
+        }
+
         function toggleVisibility(me) {
             me.style.hidden = "";
             return true;

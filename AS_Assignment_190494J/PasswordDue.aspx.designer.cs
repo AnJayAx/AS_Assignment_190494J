@@ -11,44 +11,44 @@ namespace AS_Assignment_190494J
 {
 
 
-    public partial class SignIn
+    public partial class PasswordDue
     {
 
         /// <summary>
-        /// lb_Error control.
+        /// tb_NewPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lb_Error;
+        protected global::System.Web.UI.WebControls.TextBox tb_NewPassword;
 
         /// <summary>
-        /// lb_gScore control.
+        /// lb_NewPassError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lb_gScore;
+        protected global::System.Web.UI.WebControls.Label lb_NewPassError;
 
         /// <summary>
-        /// tb_Email control.
+        /// tb_ConfirmPass control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_Email;
+        protected global::System.Web.UI.WebControls.TextBox tb_ConfirmPass;
 
         /// <summary>
-        /// tb_Password control.
+        /// lb_ConfirmPassError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_Password;
+        protected global::System.Web.UI.WebControls.Label lb_ConfirmPassError;
 
         /// <summary>
         /// btn_Submit control.

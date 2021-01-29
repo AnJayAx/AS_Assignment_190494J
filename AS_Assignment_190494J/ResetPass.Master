@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="AS_Assignment_190494J.SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ResetPass.master.cs" Inherits="AS_Assignment_190494J.ResetPass" %>
 
 <!DOCTYPE html>
 
@@ -61,7 +61,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; Last Edited 29/1/2021 4.22PM - Edson's Application Security Assignment</p>
+                <p>&copy; Last Edited 29/1/2021 2:38PM - Edson's Application Security Assignment</p>
             </footer>
         </div>
 

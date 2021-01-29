@@ -256,10 +256,13 @@ namespace AS_Assignment_190494J
             {
                 using (SqlConnection con = new SqlConnection(ASDBConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @Email, @CreditCardNo, @DOB, @PasswordHash, @PasswordSalt, @PasswordHash2, @PasswordSalt2, @PasswordHash3, @PasswordSalt3, @EmailVerified, @IV, @Key, @Status, @LockoutCounter, @LockoutReset)"))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @Email, @CreditCardNo, @DOB, @PasswordHash, @PasswordSalt, @PasswordHash2, @PasswordSalt2, @PasswordHash3, @PasswordSalt3, @EmailVerified, @IV, @Key, @Status, @LockoutCounter, @LockoutReset, @MinPassAge, @MaxPassAge)"))
                     {
                         using (SqlDataAdapter sda = new SqlDataAdapter())
                         {
+                            DateTime currentdatetime = DateTime.Now;
+                            DateTime minpassage = currentdatetime.AddMinutes(5);
+                            DateTime maxpassage = currentdatetime.AddMinutes(15);
                             cmd.CommandType = CommandType.Text;
                             cmd.Parameters.AddWithValue("@FirstName", tb_FirstName.Text.Trim());
                             cmd.Parameters.AddWithValue("@LastName", tb_LastName.Text.Trim());
@@ -278,6 +281,8 @@ namespace AS_Assignment_190494J
                             cmd.Parameters.AddWithValue("@Status", "Open");
                             cmd.Parameters.AddWithValue("@LockoutCounter", 0);
                             cmd.Parameters.AddWithValue("@LockoutReset", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@MinPassAge", minpassage);
+                            cmd.Parameters.AddWithValue("@MaxPassAge", maxpassage);
                             cmd.Connection = con;
                             con.Open();
                             cmd.ExecuteNonQuery();

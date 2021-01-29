@@ -133,7 +133,9 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="LoggedIn.Master" />
+    <Content Include="ResetPass.Master" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="PasswordDue.aspx" />
     <Content Include="Profile.aspx" />
     <Content Include="ProfilePage.aspx" />
     <Content Include="Scripts\bootstrap.js" />
@@ -215,6 +217,13 @@
     <Compile Include="LoggedIn.Master.designer.cs">
       <DependentUpon>LoggedIn.Master</DependentUpon>
     </Compile>
+    <Compile Include="PasswordDue.aspx.cs">
+      <DependentUpon>PasswordDue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PasswordDue.aspx.designer.cs">
+      <DependentUpon>PasswordDue.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -230,6 +239,13 @@
       <DependentUpon>ProfilePage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResetPass.Master.cs">
+      <DependentUpon>ResetPass.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ResetPass.Master.designer.cs">
+      <DependentUpon>ResetPass.Master</DependentUpon>
+    </Compile>
     <Compile Include="SignIn.aspx.cs">
       <DependentUpon>SignIn.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

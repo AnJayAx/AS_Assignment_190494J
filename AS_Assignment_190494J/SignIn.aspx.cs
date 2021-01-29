@@ -135,7 +135,20 @@ namespace AS_Assignment_190494J
                                     Response.Cookies.Add(new HttpCookie("AuthToken", guid));
 
                                     Session["UserEmail"] = userEmail;
-                                    Response.Redirect("LoggedIn.aspx", false);
+
+                                    //insert reset password here if compare(currenttime, maxtime) >= 0
+                                    DateTime datetimemax = Convert.ToDateTime(getMaxPassAge(tb_Email.Text));
+                                    DateTime timenow = DateTime.Now;
+                                    int comparingmaxtime = DateTime.Compare(timenow, datetimemax);
+                                    if (comparingmaxtime >= 0)
+                                    {
+                                        Response.Redirect("PasswordDue.aspx", false);
+                                    }
+                                    else
+                                    {
+                                        Response.Redirect("LoggedIn.aspx", false);
+                                    }
+                                   
                                 }
                                 else
                                 {
@@ -198,6 +211,20 @@ namespace AS_Assignment_190494J
 
                                         Session["UserEmail"] = userEmail;
                                         Response.Redirect("LoggedIn.aspx", false);
+
+                                        //insert reset password here if compare(currenttime, maxtime) >= 0
+                                        DateTime datetimemax = Convert.ToDateTime(getMaxPassAge(tb_Email.Text));
+                                        DateTime timenow = DateTime.Now;
+                                        int comparingmaxtime = DateTime.Compare(timenow, datetimemax);
+                                        if (comparingmaxtime >= 0)
+                                        {
+                                            Response.Redirect("PasswordDue.aspx", false);
+                                        }
+                                        else
+                                        {
+                                            Response.Redirect("LoggedIn.aspx", false);
+                                        }
+
                                     }
                                     else
                                     {
@@ -258,6 +285,19 @@ namespace AS_Assignment_190494J
 
                                         Session["UserEmail"] = userEmail;
                                         Response.Redirect("LoggedIn.aspx", false);
+
+                                        //insert reset password here if compare(currenttime, maxtime) >= 0
+                                        DateTime datetimemax = Convert.ToDateTime(getMaxPassAge(tb_Email.Text));
+                                        DateTime timenow = DateTime.Now;
+                                        int comparingmaxtime = DateTime.Compare(timenow, datetimemax);
+                                        if (comparingmaxtime >= 0)
+                                        {
+                                            Response.Redirect("PasswordDue.aspx", false);
+                                        }
+                                        else
+                                        {
+                                            Response.Redirect("LoggedIn.aspx", false);
+                                        }
                                     }
                                     else
                                     {
@@ -722,6 +762,38 @@ namespace AS_Assignment_190494J
                             if (reader["LockoutReset"] != DBNull.Value)
                             {
                                 s = reader["LockoutReset"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            finally { connection.Close(); }
+            return s;
+        }
+
+        protected string getMaxPassAge(string userEmail)
+        {
+            string s = null;
+            SqlConnection connection = new SqlConnection(ASDBConnectionString);
+            string sql = "select MaxPassAge FROM ACCOUNT WHERE Email=@USEREMAIL";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@USEREMAIL", userEmail);
+            try
+            {
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["MaxPassAge"] != null)
+                        {
+                            if (reader["MaxPassAge"] != DBNull.Value)
+                            {
+                                s = reader["MaxPassAge"].ToString();
                             }
                         }
                     }

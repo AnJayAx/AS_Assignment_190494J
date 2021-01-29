@@ -124,23 +124,18 @@
             <tr>
                 <td class="auto-style3">&nbsp;</td>
                 <td class="auto-style4">
-                    <div>
+                    <div>  
                         <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" />
                     </div>
                 </td>
                 <td class="auto-style4">&nbsp;</td>
             </tr>
-            <tr>
+            <%--<tr>
                 <td class="auto-style3">&nbsp;</td>
                 <td class="auto-style4">
                     <asp:Button ID="btn_Register" runat="server" OnClick="btn_Register_Click" Text="Register an Account" />
                 </td>
-            </tr>
-            <tr>
-                <td class="auto-style3">&nbsp;</td>
-                <td class="auto-style4">
-                    &nbsp;</td>
-            </tr>
+            </tr>--%>
             <tr>
                 <td class="auto-style3">&nbsp;</td>
             </tr>
