@@ -101,7 +101,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <asp:Label ID="lb_Error" runat="server"></asp:Label>
+                    <asp:Label ID="lb_Error" runat="server" ForeColor="#CC0000"></asp:Label>
                     <asp:Label ID="lb_gScore" runat="server" Visible="False"></asp:Label>
                 </td>
             </tr>

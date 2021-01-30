@@ -636,7 +636,7 @@ namespace AS_Assignment_190494J
                     using (SqlCommand cmd = new SqlCommand("UPDATE Account SET LockoutReset = @paraLockReset where Email = @paraEmail"))
                     {
                         DateTime currentTime = DateTime.Now;
-                        DateTime resetTime = currentTime.AddSeconds(10);
+                        DateTime resetTime = currentTime.AddSeconds(30);
                         cmd.Parameters.AddWithValue("@paraEmail", email);
                         cmd.Parameters.AddWithValue("@paraLockReset", resetTime);
                         cmd.Connection = conn;
