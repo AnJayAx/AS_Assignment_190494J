@@ -4,6 +4,7 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.js"></script>
     <script type="text/javascript">
         function validate() {
             var passStr = document.getElementById('<%=tb_Password.ClientID%>').value;
@@ -72,7 +73,7 @@
 
                     if (inputValue == activationCode) {
                         window.location = "SignIn.aspx";
-                       
+
                     }
                     else {
                         swal.showInputError("Incorrect Code! Try again");
@@ -236,4 +237,11 @@
             </td>
         </tr>
     </table>
+    <script type="text/javascript">
+        $("#<%=tb_CreditCard.ClientID%>").inputmask({
+            mask: "9999 9999 9999 9999",
+            placeholder: ""
+        });
+    </script>
+
 </asp:Content>

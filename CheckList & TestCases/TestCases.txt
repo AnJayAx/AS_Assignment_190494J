@@ -1,0 +1,7 @@
+--- Test Cases ---
+
+Register (SignUp.aspx)
+
+Login (SignIn.aspx)
+
+Profile (ProfilePage.aspx)

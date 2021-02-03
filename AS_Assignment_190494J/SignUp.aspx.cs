@@ -98,6 +98,7 @@ namespace AS_Assignment_190494J
                 lb_CreditCheck.Text = "Please enter your credit card number and must be 16 digit long";
                 lb_CreditCheck.ForeColor = System.Drawing.Color.Red;
             }
+
             if (String.IsNullOrEmpty(tb_BirthDate.Text))
             {
                 lb_DOBCheck.Text = "Please enter your date of birth";

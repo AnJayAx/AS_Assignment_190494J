@@ -121,7 +121,7 @@ namespace AS_Assignment_190494J
                         }
                     }
                     tb_CreditCard.Text = decryptData(creditcard);
-                    tb_CreditCard.Text = "************" + tb_CreditCard.Text.Substring(tb_CreditCard.Text.Length - 4);
+                    tb_CreditCard.Text = "**** **** **** " + tb_CreditCard.Text.Substring(tb_CreditCard.Text.Length - 4);
                 }
             }
             catch (Exception ex)

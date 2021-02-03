@@ -1,0 +1,35 @@
+--- Checklist for Application Security Assignment ---
+
+Set Strong Password
+1) Perform password complexity checks (Done)
+2) Offer feedback to user on password (Done)
+3) Implement both Client-based and Server-based checks (Done)
+
+Securing user data and passwords
+4) Implement password protection (Done)
+5) Encryption (Credit card to be encrypted) (Done)
+
+Avoid Session fixation attack (Done)
+
+Account lockout after 3 login failures (Done)
+
+Proper and clean logout (Done)
+
+Implement Google reCaptcha v3 service (Done)
+
+Prevent SQLi and XSS and perform proper input filtering, validation and verification (e.g. email) (Done)
+
+Graceful error handling on all pages (including 404, 403 error pages) (Done)
+
+Use external tools to perform software testing 
+
+Explain remediation efforts based on security report from GitHub
+
+Save your source code into github and provide the public link
+
+Account Policies
+6) Automatic account recovery after lockout (Done)
+7) Avoid password reuse (max 2 password history) (Done)
+8) Change password (Done)
+9) Minimum password age (cannot change password within 5 mins from the last change of password) (Done)
+10) Maximum password age (must change password after 15 mins) (Done)

@@ -4,6 +4,7 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.js"></script>
     <script type="text/javascript">
         function validate() {
             var passStr = document.getElementById('<%=tb_NewPass.ClientID%>').value;
@@ -42,6 +43,7 @@
             document.getElementById("<%=lb_ErrorNewPass.ClientID%>").innerHTML = "Excellent"
             document.getElementById("<%=lb_ErrorNewPass.ClientID%>").style.color = "Blue";
         }
+
 
         function alertSuccess() {
             Swal.fire({
@@ -157,10 +159,10 @@
         </tr>
         <tr>
             <td class="modal-sm" style="width: 301px">
-                <asp:TextBox ID="tb_OldPass" runat="server" Visible="False" Width="200px"></asp:TextBox>
+                <asp:TextBox ID="tb_OldPass" runat="server" Visible="False" Width="200px" TextMode="Password"></asp:TextBox>
             </td>
             <td>
-                <asp:TextBox ID="tb_NewPass" runat="server" Visible="False" Width="200px" onkeyup="javascript:validate()"></asp:TextBox>
+                <asp:TextBox ID="tb_NewPass" runat="server" Visible="False" Width="200px" onkeyup="javascript:validate()" TextMode="Password"></asp:TextBox>
                 <asp:Label ID="lb_ErrorNewPass" runat="server" Visible="False"></asp:Label>
             </td>
         </tr>
@@ -182,7 +184,7 @@
         <tr>
             <td class="modal-sm" style="width: 301px">&nbsp;</td>
             <td>
-                <asp:TextBox ID="tb_ConfirmNewPass" runat="server" Visible="False" Width="200px"></asp:TextBox>
+                <asp:TextBox ID="tb_ConfirmNewPass" runat="server" Visible="False" Width="200px" TextMode="Password"></asp:TextBox>
                 <asp:Label ID="lb_ErrorConfirmPass" runat="server" Visible="False"></asp:Label>
             </td>
         </tr>
