@@ -25,12 +25,12 @@ namespace AS_Assignment_190494J
             {
                 if (!Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value))
                 {
-                    Response.Redirect("401ErrorPage.aspx", false);
+                    throw new HttpException(401, "401 Error");
                 }
             }
             else
             {
-                Response.Redirect("401ErrorPage.aspx", false);
+                throw new HttpException(401, "401 Error");
             }
         }
 
@@ -356,7 +356,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(400, ex.ToString());
             }
             finally { }
         }
@@ -437,7 +437,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return h;
@@ -469,7 +469,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return s;
@@ -503,7 +503,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return h;
@@ -535,7 +535,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return s;
@@ -569,7 +569,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return h;
@@ -601,7 +601,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return s;
@@ -631,7 +631,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -657,7 +657,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -683,7 +683,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -709,7 +709,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -735,7 +735,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
     }

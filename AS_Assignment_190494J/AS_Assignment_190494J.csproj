@@ -119,8 +119,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="400ErrorPage.aspx" />
     <Content Include="401ErrorPage.aspx" />
     <Content Include="404ErrorPage.aspx" />
+    <Content Include="500ErrorPage.aspx" />
     <Content Include="About.aspx" />
     <Content Include="AccActivation.aspx" />
     <Content Include="App_Data\ASAssignmentDB.mdf" />
@@ -148,7 +150,6 @@
     <Content Include="Secret.Master" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="PasswordDue.aspx" />
-    <Content Include="Profile.aspx" />
     <Content Include="ProfilePage.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -190,6 +191,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="400ErrorPage.aspx.cs">
+      <DependentUpon>400ErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="400ErrorPage.aspx.designer.cs">
+      <DependentUpon>400ErrorPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="401ErrorPage.aspx.cs">
       <DependentUpon>401ErrorPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -203,6 +211,13 @@
     </Compile>
     <Compile Include="404ErrorPage.aspx.designer.cs">
       <DependentUpon>404ErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="500ErrorPage.aspx.cs">
+      <DependentUpon>500ErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="500ErrorPage.aspx.designer.cs">
+      <DependentUpon>500ErrorPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="AccActivation.aspx.cs">
       <DependentUpon>AccActivation.aspx</DependentUpon>
@@ -243,13 +258,6 @@
     </Compile>
     <Compile Include="PasswordDue.aspx.designer.cs">
       <DependentUpon>PasswordDue.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Profile.aspx.cs">
-      <DependentUpon>Profile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Profile.aspx.designer.cs">
-      <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
     <Compile Include="ProfilePage.aspx.cs">
       <DependentUpon>ProfilePage.aspx</DependentUpon>

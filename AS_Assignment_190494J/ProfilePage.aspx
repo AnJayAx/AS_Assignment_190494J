@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/LoggedIn.Master" AutoEventWireup="true" CodeBehind="ProfilePage.aspx.cs" Inherits="AS_Assignment_190494J.ProfilePage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/LoggedIn.Master" AutoEventWireup="true" CodeBehind="ProfilePage.aspx.cs" Inherits="AS_Assignment_190494J.ProfilePage" ValidateRequest="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script src="https://www.google.com/recaptcha/api.js"></script>
@@ -58,7 +58,7 @@
         function alertFailed() {
             Swal.fire({
                 title: 'Failed!',
-                text: 'Please make sure to fill up all the textboxes!',
+                text: 'Please make sure you have filled in correctly!',
                 icon: 'error'
             })
         }

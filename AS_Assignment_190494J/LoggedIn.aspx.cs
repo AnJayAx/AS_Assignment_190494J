@@ -15,7 +15,7 @@ namespace AS_Assignment_190494J
             {
                 if (!Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value))
                 {
-                    Response.Redirect("401ErrorPage.aspx", false);
+                    throw new HttpException(401, "401 Error");
                 }
                 else
                 {
@@ -26,7 +26,7 @@ namespace AS_Assignment_190494J
             }
             else
             {
-                Response.Redirect("401ErrorPage.aspx", false);
+                throw new HttpException(401, "401 Error");
             }
         }
 

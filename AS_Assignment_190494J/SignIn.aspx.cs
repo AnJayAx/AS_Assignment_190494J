@@ -339,7 +339,7 @@ namespace AS_Assignment_190494J
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.ToString());
+                    throw new HttpException(400, ex.ToString());
                 }
                 finally { }
 

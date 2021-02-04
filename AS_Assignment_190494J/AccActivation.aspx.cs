@@ -14,15 +14,16 @@ namespace AS_Assignment_190494J
         string ASDBConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["ASDBConnection"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            string email = Request.QueryString["emailadd"].ToString();
+            var email = Request.QueryString["emailadd"];
             if (email != null)
             {
-                lb_para.Text = "Your email is " + HttpUtility.HtmlEncode(email) + " , Please check your email for activation code";
+                String strEmail = HttpUtility.HtmlEncode(email.ToString());
+                lb_para.Text = "Your email is " + strEmail + " , Please check your email for activation code";
             }
             
             else
             {
-                Response.Redirect("401ErrorPage.aspx", false);
+                throw new HttpException(401, "401 Error");
             }
         }
 
@@ -70,7 +71,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -102,7 +103,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return h;

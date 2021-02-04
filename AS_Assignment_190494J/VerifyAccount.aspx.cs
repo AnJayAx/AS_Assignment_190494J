@@ -15,36 +15,50 @@ namespace AS_Assignment_190494J
         string activationCode;
         protected void Page_Load(object sender, EventArgs e)
         {
-            string email = Request.QueryString["emailagain"].ToString();
+            String email = Request.QueryString["emailagain"].ToString();
             if (email != null)
             {
                 if (!IsPostBack)
                 {
-                    SqlConnection con = new SqlConnection();
-                    con.ConnectionString = ASDBConnectionString;
-                    con.Open();
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.CommandText = "SELECT * FROM Account where Email = @userEmail";
-                    cmd.Parameters.AddWithValue("userEmail", email);
-                    cmd.Connection = con;
-                    SqlDataReader rd = cmd.ExecuteReader();
-                    if (rd.HasRows)
+                    string getVerified = getAccVerified(email);
+                    if (getVerified == "False")
                     {
-                        lb_para.Text = "Your email is " + email + " , Please check your email for activation code";
-                        updateCode(email);
-                        sendCode(email);
+                        SqlConnection con = new SqlConnection();
+                        con.ConnectionString = ASDBConnectionString;
+                        con.Open();
+                        SqlCommand cmd = new SqlCommand();
+                        cmd.CommandText = "SELECT * FROM Account where Email = @userEmail";
+                        cmd.Parameters.AddWithValue("userEmail", email);
+                        cmd.Connection = con;
+                        SqlDataReader rd = cmd.ExecuteReader();
+                        if (rd.HasRows)
+                        {
+                            lb_para.Text = "Your email is " + email + " , Please check your email for activation code";
+                            updateCode(email);
+                            sendCode(email);
+                        }
+                        else
+                        {
+                            throw new HttpException(401, "401 Error");
+                        }
                     }
                     else
                     {
-                        Response.Redirect("401ErrorPage.aspx", false);
+                        throw new HttpException(400, "400 Error");
                     }
+
                 }
+                //else
+                //{
+                //    throw new HttpException(400, "400 Error");
+                //}
             }
 
             else
             {
-                Response.Redirect("401ErrorPage.aspx", false);
+                throw new HttpException(401, "401 Error");
             }
+
         }
 
         public int updateCode(string email)
@@ -69,25 +83,23 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
         private void sendCode(string email)
         {
-            activationCode = getActivationCode(email);
             SmtpClient smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             smtp.UseDefaultCredentials = true;
-            var sentfrom = "190494jsitconnect@gmail.com";
-            var password = "P@55w0rd";
-            smtp.Credentials = new System.Net.NetworkCredential(sentfrom, password);
+            smtp.Credentials = new System.Net.NetworkCredential("190494jsitconnect@gmail.com", "P@@55w0rd");
             smtp.EnableSsl = true;
             MailMessage msg = new MailMessage();
             msg.Subject = "Activation Code to Verify Email Address";
-            msg.Body = "Dear " + HttpUtility.HtmlEncode(email) + ", your activation code is " + activationCode + ".";
-            string toAddress = HttpUtility.HtmlEncode(email);
+            activationCode = getActivationCode(email);
+            msg.Body = "Dear " + email + ", your activation code is " + activationCode + ".";
+            string toAddress = email;
             msg.To.Add(toAddress);
             string fromAddress = "SITCONNECT <190494jsitconnect@gmail.com>";
             msg.From = new MailAddress(fromAddress);
@@ -99,6 +111,7 @@ namespace AS_Assignment_190494J
             {
                 throw new Exception(ex.ToString());
             }
+
         }
 
         protected string getActivationCode(string userEmail)
@@ -129,7 +142,41 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
+            }
+            finally { connection.Close(); }
+            return h;
+        }
+
+        protected string getAccVerified(string userEmail)
+        {
+            string h = null;
+
+            SqlConnection connection = new SqlConnection(ASDBConnectionString);
+            string sql = "select EmailVerified FROM Account WHERE Email=@USEREMAIL";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@USEREMAIL", userEmail);
+
+            try
+            {
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["EmailVerified"] != null)
+                        {
+                            if (reader["EmailVerified"] != DBNull.Value)
+                            {
+                                h = reader["EmailVerified"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return h;
@@ -155,7 +202,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 

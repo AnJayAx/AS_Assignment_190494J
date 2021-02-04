@@ -35,7 +35,9 @@ namespace AS_Assignment_190494J
                 string Password = HttpUtility.HtmlEncode(tb_Password.Text);
                 tb_Password.Attributes.Add("value", Password);
             }
-            tb_BirthDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
+            //tb_BirthDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
+            //DateTime agerequired = DateTime.Today.AddYears(-25);
+            tb_BirthDate.Attributes["max"] = DateTime.Today.AddYears(-10).ToString("yyyy-MM-dd");
         }
 
         public class ASObject
@@ -93,7 +95,16 @@ namespace AS_Assignment_190494J
                 lb_EmailCheck.Text = "Please enter your email";
                 lb_EmailCheck.ForeColor = System.Drawing.Color.Red;
             }
-            if (String.IsNullOrEmpty(creditCard) || creditCard.Length > 16)
+
+            var emailformat = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+            var emailsuccess = Regex.Match(email, emailformat);
+            if (!emailsuccess.Success)
+            {
+                lb_EmailCheck.Text = "Please check if you have filled in the correct email";
+                lb_EmailCheck.ForeColor = System.Drawing.Color.Red;
+            }
+
+            if (String.IsNullOrEmpty(creditCard) || creditCard.Length < 16)
             {
                 lb_CreditCheck.Text = "Please enter your credit card number and must be 16 digit long";
                 lb_CreditCheck.ForeColor = System.Drawing.Color.Red;
@@ -243,6 +254,7 @@ namespace AS_Assignment_190494J
             {
                 throw new Exception(ex.ToString());
             }
+
         }
 
         protected string getActivationCode(string userEmail)
@@ -273,7 +285,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return h;
@@ -366,7 +378,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -385,7 +397,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { }
             return cipherText;

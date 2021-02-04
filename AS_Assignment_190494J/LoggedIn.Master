@@ -46,7 +46,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/">Application name</a>
+                    <a class="navbar-brand" runat="server" href="~/ProfilePage">Application name</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
@@ -61,7 +61,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; Last Edited 4/2/2021 8.55PM - Edson's Application Security Assignment</p>
+                <p>&copy; Last Edited 5/2/2021 1:29AM - 190494J Edson's Application Security Assignment</p>
             </footer>
         </div>
 

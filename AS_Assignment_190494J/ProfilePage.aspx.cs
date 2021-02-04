@@ -41,7 +41,7 @@ namespace AS_Assignment_190494J
             }
             else
             {
-                Response.Redirect("401ErrorPage.aspx", false);
+                throw new HttpException(401, "401 Error");
             }
         }
 
@@ -71,7 +71,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { }
             return plainText;
@@ -126,7 +126,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally
             {
@@ -186,7 +186,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return h;
@@ -218,7 +218,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return s;
@@ -252,7 +252,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return h;
@@ -284,7 +284,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return s;
@@ -318,7 +318,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return h;
@@ -350,7 +350,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return s;
@@ -380,7 +380,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -410,7 +410,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
             finally { connection.Close(); }
             return s;
@@ -792,7 +792,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(400, ex.ToString());
             }
             finally { }
         }
@@ -819,7 +819,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -845,7 +845,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -871,7 +871,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -897,7 +897,7 @@ namespace AS_Assignment_190494J
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new HttpException(500, ex.ToString());
             }
         }
 
@@ -912,7 +912,7 @@ namespace AS_Assignment_190494J
 
             if (String.IsNullOrEmpty(tb_NewPass.Text))
             {
-                lb_ErrorNewPass.Text = "Please enter a password";
+                lb_ErrorNewPass.Text = "Please enter a password";   
                 lb_ErrorNewPass.ForeColor = System.Drawing.Color.Red;
             }
             if (String.IsNullOrEmpty(tb_ConfirmNewPass.Text))

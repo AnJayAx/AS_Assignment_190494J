@@ -11,25 +11,16 @@ namespace AS_Assignment_190494J
 {
 
 
-    public partial class Profile
+    public partial class _500ErrorPage
     {
 
         /// <summary>
-        /// lb_Email control.
+        /// HtmlForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lb_Email;
-
-        /// <summary>
-        /// lb_CCard control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lb_CCard;
+        protected global::System.Web.UI.HtmlControls.HtmlForm HtmlForm;
     }
 }
