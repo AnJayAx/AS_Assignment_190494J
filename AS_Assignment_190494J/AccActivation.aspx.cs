@@ -12,13 +12,12 @@ namespace AS_Assignment_190494J
     public partial class AccActivation : System.Web.UI.Page
     {
         string ASDBConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["ASDBConnection"].ConnectionString;
-        string activationCode;
         protected void Page_Load(object sender, EventArgs e)
         {
             string email = Request.QueryString["emailadd"].ToString();
             if (email != null)
             {
-                lb_para.Text = "Your email is " + email + " , Please check your email for activation code";
+                lb_para.Text = "Your email is " + HttpUtility.HtmlEncode(email) + " , Please check your email for activation code";
             }
             
             else

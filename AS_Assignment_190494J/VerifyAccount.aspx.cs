@@ -80,12 +80,14 @@ namespace AS_Assignment_190494J
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             smtp.UseDefaultCredentials = true;
-            smtp.Credentials = new System.Net.NetworkCredential("190494jsitconnect@gmail.com", "P@@55w0rd");
+            var sentfrom = "190494jsitconnect@gmail.com";
+            var password = "P@55w0rd";
+            smtp.Credentials = new System.Net.NetworkCredential(sentfrom, password);
             smtp.EnableSsl = true;
             MailMessage msg = new MailMessage();
             msg.Subject = "Activation Code to Verify Email Address";
-            msg.Body = "Dear " + email + ", your activation code is " + activationCode + ".";
-            string toAddress = email;
+            msg.Body = "Dear " + HttpUtility.HtmlEncode(email) + ", your activation code is " + activationCode + ".";
+            string toAddress = HttpUtility.HtmlEncode(email);
             msg.To.Add(toAddress);
             string fromAddress = "SITCONNECT <190494jsitconnect@gmail.com>";
             msg.From = new MailAddress(fromAddress);

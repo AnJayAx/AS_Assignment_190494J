@@ -32,7 +32,7 @@ namespace AS_Assignment_190494J
         {
             if (IsPostBack)
             {
-                string Password = tb_Password.Text;
+                string Password = HttpUtility.HtmlEncode(tb_Password.Text);
                 tb_Password.Attributes.Add("value", Password);
             }
             tb_BirthDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
@@ -46,13 +46,13 @@ namespace AS_Assignment_190494J
 
         private bool ValidateInput()
         {
-            tb_FirstName.Text = HttpUtility.HtmlEncode(tb_FirstName.Text);
-            tb_LastName.Text = HttpUtility.HtmlEncode(tb_LastName.Text);
-            tb_CreditCard.Text = HttpUtility.HtmlEncode(tb_CreditCard.Text);
-            tb_Email.Text = HttpUtility.HtmlEncode(tb_Email.Text);
-            tb_BirthDate.Text = HttpUtility.HtmlEncode(tb_BirthDate.Text);
-            tb_Password.Text = HttpUtility.HtmlEncode(tb_Password.Text);
-            tb_ConfirmPassword.Text = HttpUtility.HtmlEncode(tb_ConfirmPassword.Text);
+            var firstName = HttpUtility.HtmlEncode(tb_FirstName.Text);
+            var lastName = HttpUtility.HtmlEncode(tb_LastName.Text);
+            var creditCard = HttpUtility.HtmlEncode(tb_CreditCard.Text);
+            var email = HttpUtility.HtmlEncode(tb_Email.Text);
+            var birthdate = HttpUtility.HtmlEncode(tb_BirthDate.Text);
+            var password = HttpUtility.HtmlEncode(tb_Password.Text);
+            var confirmpassword = HttpUtility.HtmlEncode(tb_ConfirmPassword.Text);
             bool result;
             lb_FNameCheck.Text = String.Empty;
             lb_LNameCheck.Text = String.Empty;
@@ -64,47 +64,47 @@ namespace AS_Assignment_190494J
 
             var lettersOnly = @"^[a-zA-Z]{1,25}$";
 
-            if (String.IsNullOrEmpty(tb_FirstName.Text))
+            if (String.IsNullOrEmpty(firstName))
             {
                 lb_FNameCheck.Text = "Please enter your first name";
                 lb_FNameCheck.ForeColor = System.Drawing.Color.Red;
             }
-            var fnamelettersmatch = Regex.Match(tb_FirstName.Text, lettersOnly);
+            var fnamelettersmatch = Regex.Match(lastName, lettersOnly);
             if (!fnamelettersmatch.Success)
             {
                 lb_FNameCheck.Text = "First Name should only contain letters!";
                 lb_FNameCheck.ForeColor = System.Drawing.Color.Red;
             }
 
-            if (String.IsNullOrEmpty(tb_LastName.Text))
+            if (String.IsNullOrEmpty(creditCard))
             {
                 lb_LNameCheck.Text = "Please enter your last name";
                 lb_LNameCheck.ForeColor = System.Drawing.Color.Red;
             }
-            var lnamelettersmatch = Regex.Match(tb_LastName.Text, lettersOnly);
+            var lnamelettersmatch = Regex.Match(lastName, lettersOnly);
             if (!lnamelettersmatch.Success)
             {
                 lb_LNameCheck.Text = "Last Name should only contain letters!";
                 lb_LNameCheck.ForeColor = System.Drawing.Color.Red;
             }
 
-            if (String.IsNullOrEmpty(tb_Email.Text))
+            if (String.IsNullOrEmpty(email))
             {
                 lb_EmailCheck.Text = "Please enter your email";
                 lb_EmailCheck.ForeColor = System.Drawing.Color.Red;
             }
-            if (String.IsNullOrEmpty(tb_CreditCard.Text) || tb_CreditCard.Text.Length > 16)
+            if (String.IsNullOrEmpty(creditCard) || creditCard.Length > 16)
             {
                 lb_CreditCheck.Text = "Please enter your credit card number and must be 16 digit long";
                 lb_CreditCheck.ForeColor = System.Drawing.Color.Red;
             }
 
-            if (String.IsNullOrEmpty(tb_BirthDate.Text))
+            if (String.IsNullOrEmpty(birthdate))
             {
                 lb_DOBCheck.Text = "Please enter your date of birth";
                 lb_DOBCheck.ForeColor = System.Drawing.Color.Red;
             }
-            result = DateTime.TryParse(tb_BirthDate.Text, out DateTime dob);
+            result = DateTime.TryParse(birthdate, out DateTime dob);
             //var parameterDate = DateTime.ParseExact(tb_BirthDate.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             var todaydate = DateTime.Today;
             if (!result)
@@ -113,24 +113,24 @@ namespace AS_Assignment_190494J
                 lb_DOBCheck.ForeColor = System.Drawing.Color.Red;
             }
 
-            if (Convert.ToDateTime(tb_BirthDate.Text) > todaydate)
+            if (Convert.ToDateTime(birthdate) > todaydate)
             {
                 lb_DOBCheck.Text = "Birth Date should not be after today !";
                 lb_DOBCheck.ForeColor = System.Drawing.Color.Red;
             }
-            if (String.IsNullOrEmpty(tb_Password.Text))
+            if (String.IsNullOrEmpty(password))
             {
                 lb_PasswordCheck.Text = "Please enter a password";
                 lb_PasswordCheck.ForeColor = System.Drawing.Color.Red;
             }
-            if (String.IsNullOrEmpty(tb_ConfirmPassword.Text))
+            if (String.IsNullOrEmpty(confirmpassword))
             {
                 lb_ConfirmPassCheck.Text = "Please confirm your password";
                 lb_ConfirmPassCheck.ForeColor = System.Drawing.Color.Red;
             }
 
             //Check if confirm password is the same as password
-            if (tb_ConfirmPassword.Text != tb_Password.Text)
+            if (confirmpassword != password)
             {
                 lb_ConfirmPassCheck.Text = "Not same as password!";
                 lb_ConfirmPassCheck.ForeColor = System.Drawing.Color.Red;
@@ -138,7 +138,7 @@ namespace AS_Assignment_190494J
 
             // Regex password validation
             var regex = @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
-            var match = Regex.Match(tb_Password.Text, regex, RegexOptions.IgnoreCase);
+            var match = Regex.Match(password, regex, RegexOptions.IgnoreCase);
             if (!match.Success)
             {
                 lb_PasswordCheck.Text = "Password needs to have 8 - 20 characters, 1 uppercase and 1 lowercase alphabet, 1 number and 1 special character!";
