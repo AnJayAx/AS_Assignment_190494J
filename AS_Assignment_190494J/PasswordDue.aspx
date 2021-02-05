@@ -55,7 +55,7 @@
         function alertFailed() {
             Swal.fire({
                 title: 'Failed!',
-                text: 'Please make sure to fill up all the textboxes!',
+                text: 'Please make sure to fill up all the textboxes correctly!',
                 icon: 'error'
             })
         }
@@ -88,7 +88,7 @@
         </tr>
         <tr>
             <td>
-                <asp:TextBox ID="tb_NewPassword" runat="server" Width="200px"></asp:TextBox>
+                <asp:TextBox ID="tb_NewPassword" runat="server" Width="200px" TextMode="Password"></asp:TextBox>
                 <asp:Label ID="lb_NewPassError" runat="server" ForeColor="#990000"></asp:Label>
             </td>
         </tr>
@@ -100,7 +100,7 @@
         </tr>
         <tr>
             <td>
-                <asp:TextBox ID="tb_ConfirmPass" runat="server" Width="200px"></asp:TextBox>
+                <asp:TextBox ID="tb_ConfirmPass" runat="server" Width="200px" TextMode="Password"></asp:TextBox>
                 <asp:Label ID="lb_ConfirmPassError" runat="server" ForeColor="#990000"></asp:Label>
 
             </td>

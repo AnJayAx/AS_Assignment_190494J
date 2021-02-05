@@ -516,7 +516,7 @@ namespace AS_Assignment_190494J
                                     else
                                     {
                                         lb_ErrorNewPass.Visible = true;
-                                        lb_ErrorNewPass.Text = "Your password cannot be the same as your old one!";
+                                        lb_ErrorNewPass.Text = "Your password cannot be the same as your last 2 ones!";
                                         lb_ErrorNewPass.ForeColor = Color.Red;
                                     }
                                 }
@@ -679,7 +679,7 @@ namespace AS_Assignment_190494J
                                     else
                                     {
                                         lb_ErrorNewPass.Visible = true;
-                                        lb_ErrorNewPass.Text = "Your password cannot be the same as your old one!";
+                                        lb_ErrorNewPass.Text = "Your password cannot be the same as your last 2 ones!";
                                         lb_ErrorNewPass.ForeColor = Color.Red;
                                     }
 
@@ -773,7 +773,7 @@ namespace AS_Assignment_190494J
                                     else
                                     {
                                         lb_ErrorNewPass.Visible = true;
-                                        lb_ErrorNewPass.Text = "Your password cannot be the same as your old one!";
+                                        lb_ErrorNewPass.Text = "Your password cannot be the same as your last 2 ones!";
                                         lb_ErrorNewPass.ForeColor = Color.Red;
                                     }
 

@@ -32,8 +32,22 @@ namespace AS_Assignment_190494J
         {
             if (IsPostBack)
             {
+
                 string Password = HttpUtility.HtmlEncode(tb_Password.Text);
                 tb_Password.Attributes.Add("value", Password);
+            }
+            else
+            {
+                if (Request.Cookies["AuthToken"] != null)
+                {
+                    Response.Cookies["AuthToken"].Value = string.Empty;
+                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                if (Request.Cookies["ASP.NET_SessionId"] != null)
+                {
+                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+                }
             }
             //tb_BirthDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
             //DateTime agerequired = DateTime.Today.AddYears(-25);

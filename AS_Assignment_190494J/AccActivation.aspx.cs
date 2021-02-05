@@ -14,11 +14,12 @@ namespace AS_Assignment_190494J
         string ASDBConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["ASDBConnection"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            var email = Request.QueryString["emailadd"];
+            var email = Request.QueryString["emailadd"].ToString();
+            string encemail = HttpUtility.HtmlEncode(email);
             if (email != null)
             {
-                String strEmail = HttpUtility.HtmlEncode(email.ToString());
-                lb_para.Text = "Your email is " + strEmail + " , Please check your email for activation code";
+
+                lb_para.Text = "Your email is " + encemail + " , Please check your email for activation code";
             }
             
             else

@@ -24,12 +24,24 @@ namespace AS_Assignment_190494J
         //string errorMsg;
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (IsPostBack)
-            //{
-            //    string Password = tb_Password.Text;
-            //    tb_Password.Attributes.Add("value", Password);
+            if (!IsPostBack)
+            {
+                if (Request.Cookies["AuthToken"] != null)
+                {
+                    Response.Cookies["AuthToken"].Value = string.Empty;
+                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                if (Request.Cookies["ASP.NET_SessionId"] != null)
+                {
+                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+                }
 
-            //}
+
+                //string Password = tb_Password.Text;
+                //tb_Password.Attributes.Add("value", Password);
+            }
+
         }
 
         public class ASObject
@@ -83,10 +95,9 @@ namespace AS_Assignment_190494J
         {
             if (!ValidateCaptcha())
             {
-                tb_Email.Text = HttpUtility.HtmlEncode(tb_Email.Text);
-                tb_Password.Text = HttpUtility.HtmlEncode(tb_Password.Text);
-                string userEmail = tb_Email.Text.ToString().Trim();
-                string pwd = tb_Password.Text.ToString().Trim();
+
+                string userEmail = HttpUtility.HtmlEncode(tb_Email.Text.ToString().Trim());
+                string pwd = HttpUtility.HtmlEncode(tb_Password.Text.ToString().Trim());
 
                 SHA512Managed hashing = new SHA512Managed();
                 string dbHash = getDBHash(userEmail);
@@ -856,7 +867,7 @@ namespace AS_Assignment_190494J
         protected void btn_Verify_Click(object sender, EventArgs e)
         {
             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertVerifyAccount()", true);
-            
+
         }
     }
 }

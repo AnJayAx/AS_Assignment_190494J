@@ -16,11 +16,12 @@ namespace AS_Assignment_190494J
         protected void Page_Load(object sender, EventArgs e)
         {
             String email = Request.QueryString["emailagain"].ToString();
+            string encemail = HttpUtility.HtmlEncode(email);
             if (email != null)
             {
                 if (!IsPostBack)
                 {
-                    string getVerified = getAccVerified(email);
+                    string getVerified = getAccVerified(encemail);
                     if (getVerified == "False")
                     {
                         SqlConnection con = new SqlConnection();
@@ -28,14 +29,14 @@ namespace AS_Assignment_190494J
                         con.Open();
                         SqlCommand cmd = new SqlCommand();
                         cmd.CommandText = "SELECT * FROM Account where Email = @userEmail";
-                        cmd.Parameters.AddWithValue("userEmail", email);
+                        cmd.Parameters.AddWithValue("userEmail", encemail);
                         cmd.Connection = con;
                         SqlDataReader rd = cmd.ExecuteReader();
                         if (rd.HasRows)
                         {
-                            lb_para.Text = "Your email is " + email + " , Please check your email for activation code";
-                            updateCode(email);
-                            sendCode(email);
+                            lb_para.Text = "Your email is " + encemail + " , Please check your email for activation code";
+                            updateCode(encemail);
+                            sendCode(encemail);
                         }
                         else
                         {
