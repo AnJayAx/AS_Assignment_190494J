@@ -14,7 +14,7 @@ namespace AS_Assignment_190494J
 
         }
 
-        protected void Logout(object sender, EventArgs e)
+        protected void OnClick_Logout(object sender, EventArgs e)
         {
             Session.Clear();
             Session.Abandon();
@@ -29,7 +29,7 @@ namespace AS_Assignment_190494J
 
             if (Request.Cookies["AuthToken"] != null)
             {
-                Response.Cookies["Authtoken"].Value = string.Empty;
+                Response.Cookies["AuthToken"].Value = string.Empty;
                 Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
             }
         }

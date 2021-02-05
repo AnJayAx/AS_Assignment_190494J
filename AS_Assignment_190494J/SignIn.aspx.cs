@@ -24,23 +24,23 @@ namespace AS_Assignment_190494J
         //string errorMsg;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                if (Request.Cookies["AuthToken"] != null)
-                {
-                    Response.Cookies["AuthToken"].Value = string.Empty;
-                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                if (Request.Cookies["ASP.NET_SessionId"] != null)
-                {
-                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
-                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
-                }
+            //if (!IsPostBack)
+            //{
+            //    if (Request.Cookies["AuthToken"] != null)
+            //    {
+            //        Response.Cookies["AuthToken"].Value = string.Empty;
+            //        Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+            //    }
+            //    if (Request.Cookies["ASP.NET_SessionId"] != null)
+            //    {
+            //        Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+            //        Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+            //    }
 
 
-                //string Password = tb_Password.Text;
-                //tb_Password.Attributes.Add("value", Password);
-            }
+            //    //string Password = tb_Password.Text;
+            //    //tb_Password.Attributes.Add("value", Password);
+            //}
 
         }
 

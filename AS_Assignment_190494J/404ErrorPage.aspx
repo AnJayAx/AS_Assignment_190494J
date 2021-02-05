@@ -39,7 +39,7 @@
 
                         </div>
                         <div class="error-actions">
-                            <a href="LoggedIn.aspx" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
+                            <a href="SignIn.aspx" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
                                 Take Me Home </a>
                         </div>
                     </div>
